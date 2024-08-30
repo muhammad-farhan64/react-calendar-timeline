@@ -1,0 +1,275 @@
+{
+  "ignorePatterns": [
+    "environment.d.ts",
+    ".eslintrc.json"
+  ],
+  "env": {
+    "jest/globals": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "next",
+    "prettier",
+    "plugin:@next/next/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "eslint-plugin-import-helpers",
+    "prettier"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "parserOptions": {
+        "ecmaFeatures": {
+          "jsx": true
+        },
+        "project": [
+          "./tsconfig.json"
+        ],
+        "ecmaVersion": 12,
+        "sourceType": "module"
+      },
+      "rules": {
+        "no-undef": "off",
+        "import-helpers/order-imports": [
+          "warn",
+          {
+            "newlinesBetween": "always",
+            "groups": [
+              "module",
+              "/^@shared/",
+              [
+                "/^@components/",
+                "/^@constants/",
+                "/^@contexts/",
+                "/^@hooks/",
+                "/^@services/",
+                "/^@utils/"
+              ],
+              [
+                "parent",
+                "index",
+                "sibling"
+              ]
+            ],
+            "alphabetize": {
+              "order": "asc",
+              "ignoreCase": true
+            }
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "default",
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase",
+              "snake_case"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "typeLike",
+            "format": [
+              "PascalCase"
+            ],
+            "custom": {
+              "regex": "^I[A-Z]",
+              "match": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.test.ts",
+        "*.test.tsx"
+      ],
+      "plugins": [
+        "jest"
+      ],
+      "extends": [
+        "plugin:jest/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/unbound-method": "off",
+        "jest/prefer-strict-equal": "error",
+        "jest/prefer-todo": "error",
+        "jest/unbound-method": "error",
+        "jest/prefer-spy-on": "error",
+        "jest/prefer-mock-promise-shorthand": "error",
+        "jest/prefer-expect-resolves": "error",
+        "jest/prefer-comparison-matcher": "error",
+        "jest/max-nested-describe": [
+          "error",
+          {
+            "max": 2
+          }
+        ],
+        "jest/prefer-lowercase-title": [
+          "error",
+          {
+            "ignore": [
+              "describe"
+            ]
+          }
+        ],
+        "jest/consistent-test-it": [
+          "error",
+          {
+            "fn": "it",
+            "withinDescribe": "test"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "warn",
+          {
+            "selector": "default",
+            "format": [
+              "camelCase",
+              "UPPER_CASE",
+              "PascalCase",
+              "snake_case"
+            ],
+            "leadingUnderscore": "allow"
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "pages/**/*.tsx",
+        "tailwind.*.ts",
+        "jest.*.js",
+        "pages/**/*.ts",
+        "page/*.tsx"
+      ],
+      "rules": {
+        "import/no-unused-modules": [
+          "off",
+          {
+            "unusedExports": true
+          }
+        ]
+      }
+    }
+  ],
+  "rules": {
+    "import/no-unused-modules": [
+      "error",
+      {
+        "unusedExports": true
+      }
+    ],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "enum",
+        "format": [
+          "PascalCase"
+        ],
+        "suffix": [
+          "Enum"
+        ]
+      }
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "array": true,
+        "object": true
+      },
+      {
+        "enforceForRenamedProperties": false
+      }
+    ],
+    "@typescript-eslint/array-type": [
+      "error",
+      {
+        "default": "generic"
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/consistent-generic-constructors": "error",
+    "@typescript-eslint/consistent-indexed-object-style": "error",
+    "@typescript-eslint/consistent-type-definitions": [
+      "error",
+      "type"
+    ],
+    "@typescript-eslint/indent": "off",
+    "@typescript-eslint/no-duplicate-enum-values": "error",
+    "@typescript-eslint/no-shadow": "error",
+    "@typescript-eslint/no-use-before-define": "error",
+    "class-methods-use-this": "off",
+    "import/prefer-default-export": 0,
+    "no-inline-comments": "error",
+    "no-nested-ternary": "warn",
+    "no-shadow": "off",
+    "no-unreachable": "error",
+    "no-restricted-imports": "off",
+    "react-hooks/exhaustive-deps": "warn",
+    "react-hooks/rules-of-hooks": "error",
+    "react/button-has-type": "off",
+    "react/display-name": "warn",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-boolean-value": "error",
+    "react/jsx-closing-bracket-location": "error",
+    "react/jsx-closing-tag-location": "error",
+    "react/jsx-curly-newline": "off",
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".tsx",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/jsx-indent-props": [
+      2,
+      "tab"
+    ],
+    "react/jsx-indent": "off",
+    "no-console": "warn",
+    "react/jsx-tag-spacing": [
+      2,
+      {
+        "beforeSelfClosing": "always"
+      }
+    ],
+    "react/jsx-wrap-multilines": [
+      2,
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "ignore",
+        "condition": "ignore",
+        "logical": "ignore",
+        "prop": "ignore"
+      }
+    ]
+  }
+}
