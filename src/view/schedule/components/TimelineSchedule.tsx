@@ -1,45 +1,34 @@
 import { useViewModelContext } from "@/providers/ViewModel";
 import { Input } from "@/view/common/components/ui";
-import { add, addDays, startOfDay, subDays } from "date-fns";
+import { addDays, startOfDay, subDays } from "date-fns";
 import Timeline, {
   DateHeader,
   SidebarHeader,
   TimelineHeaders,
 } from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
-import { SchedulelViewModel } from "../hooks";
+import { defaultGroups, SchedulelViewModel } from "../hooks";
 
 const startDate = startOfDay(new Date()); // Starting from today at 00:00
 const endDate = addDays(startDate, 31);
 
-const groups2 = [
-  { id: 1, title: "group 1" },
-  { id: 2, title: "group 2" },
-];
-
-const items2 = [
-  {
-    id: 1,
-    group: 1,
-    title: "item 1",
-    start_time: new Date(),
-    end_time: add(new Date(), { days: 2 }),
-  },
-  {
-    id: 2,
-    group: 2,
-    title: "item 2",
-    start_time: new Date(),
-    end_time: add(new Date(), { days: 2 }),
-  },
-];
-
 export const TimelineSchedule = () => {
-  const { groups, activities } = useViewModelContext<SchedulelViewModel>();
+  const { groups, activities, filter, onChangeFilter } =
+    useViewModelContext<SchedulelViewModel>();
+
+  const groupFilter = groups.filter((group) =>
+    group.title.toLowerCase().includes(filter)
+  );
   return (
     <div className="mt-2">
+      <Input
+        placeholder="Search"
+        value={filter}
+        onChange={onChangeFilter}
+        className="mb-4"
+      />
       <Timeline
-        groups={groups}
+        groups={groupFilter.length === 0 ? defaultGroups : groupFilter}
         items={activities}
         defaultTimeStart={subDays(startDate, 0)}
         defaultTimeEnd={endDate}
@@ -59,8 +48,11 @@ export const TimelineSchedule = () => {
           <SidebarHeader>
             {({ getRootProps }) => {
               return (
-                <div {...getRootProps()} className="bg-[#0b7474] p-2">
-                  <Input placeholder="Search" />
+                <div
+                  {...getRootProps()}
+                  className="bg-[#0b7474] p-2 text-center text-white"
+                >
+                  On Board Crew
                 </div>
               );
             }}

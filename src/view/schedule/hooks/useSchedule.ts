@@ -1,13 +1,14 @@
 import uniqBy from "lodash.uniqby";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import data from "../data/schedule.json";
 import { mapToActivity, mapToGroup } from "../mappers";
 import { GroupDataType, ItemDataType } from "../types";
 
+export const defaultGroups = [{ id: "0", title: "There are no crew" }];
 export const useSchedule = () => {
   const [activities, setActivities] = useState<ItemDataType[]>([]);
-  const [groups, setGroups] = useState<GroupDataType[]>([]);
-
+  const [groups, setGroups] = useState<GroupDataType[]>(defaultGroups);
+  const [filter, setFilter] = useState("");
   useEffect(() => {
     const storedGroup = localStorage.getItem("groupSchedule");
     const storedItem = localStorage.getItem("itemSchedule");
@@ -26,9 +27,18 @@ export const useSchedule = () => {
       setGroups(groupData);
     }
   }, []);
+
+  const onChangeFilter = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setFilter(event.target.value);
+    },
+    [] // Empty dependency array means this callback will not change
+  );
   return {
     activities,
     groups,
+    onChangeFilter,
+    filter,
   };
 };
 
