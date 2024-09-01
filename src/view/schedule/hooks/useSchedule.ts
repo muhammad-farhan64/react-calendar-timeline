@@ -1,3 +1,4 @@
+import { useToggle } from "@/view/common/hooks";
 import uniqBy from "lodash.uniqby";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import data from "../data/schedule.json";
@@ -9,6 +10,18 @@ export const useSchedule = () => {
   const [activities, setActivities] = useState<ItemDataType[]>([]);
   const [groups, setGroups] = useState<GroupDataType[]>(defaultGroups);
   const [filter, setFilter] = useState("");
+  const [form, setForm] = useState<{
+    user?: string;
+    startDate?: Date;
+    endDate?: Date;
+  }>({
+    user: "",
+    startDate: undefined,
+    endDate: undefined,
+  });
+
+  const [openAddSchedule, toggleAddSchedule] = useToggle();
+
   useEffect(() => {
     const storedGroup = localStorage.getItem("groupSchedule");
     const storedItem = localStorage.getItem("itemSchedule");
@@ -28,17 +41,58 @@ export const useSchedule = () => {
     }
   }, []);
 
-  const onChangeFilter = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setFilter(event.target.value);
-    },
-    [] // Empty dependency array means this callback will not change
-  );
+  const onChangeFilter = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setFilter(event.target.value);
+  }, []);
+
+  const onSubmit = () => {
+    if (!form.user || !form.startDate || !form.endDate) {
+      alert("please fill all form");
+      return;
+    }
+
+    if (form.endDate <= form.startDate) {
+      alert("End date must be greater than start date.");
+      return;
+    }
+    const mapGroupData = mapToGroup({
+      user: form.user,
+      start: new Date(form.startDate).toString(),
+      end: new Date(form.endDate).toString(),
+    });
+    const mapActivityData = mapToActivity({
+      user: form.user,
+      start: new Date(form.startDate).toString(),
+      end: new Date(form.endDate).toString(),
+    });
+
+    const checkUniqGroups = uniqBy([...groups, mapGroupData], "id");
+
+    setGroups(checkUniqGroups);
+    setActivities([...activities, mapActivityData]);
+
+    localStorage.setItem("groupSchedule", JSON.stringify(checkUniqGroups));
+    localStorage.setItem(
+      "itemSchedule",
+      JSON.stringify([...activities, mapActivityData])
+    );
+    setForm({
+      user: "",
+      startDate: undefined,
+      endDate: undefined,
+    });
+    toggleAddSchedule();
+  };
   return {
     activities,
     groups,
     onChangeFilter,
     filter,
+    form,
+    setForm,
+    onSubmit,
+    openAddSchedule,
+    toggleAddSchedule,
   };
 };
 
